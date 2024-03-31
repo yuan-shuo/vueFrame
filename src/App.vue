@@ -9,11 +9,8 @@
     <div class="box-mid">
       <!-- AI接口 -->
       <div class="mesBox">
-        <div 
-        :class="item.role === 'assistant'?'talka':'talku'"
-         v-for="(item, index) in talkList"
-          :key=index>
-        {{ item.role }}：{{ item.content }}
+        <div :class="item.role === 'assistant' ? 'talka' : 'talku'" v-for="(item, index) in talkList" :key=index>
+          {{ item.role }}：{{ item.content }}
         </div>
         <div class="talka" v-if="awaiting">assistant：请稍等</div>
         <!-- <div>{{ talkList }}</div> -->
@@ -21,15 +18,10 @@
       <div class="divLine2"></div>
       <div class="inputBox">
         <!-- 输入框 -->
-        <input class="textBox" 
-        type="text" 
-        v-model="intext"
-        placeholder="想写些什么呢~">
+        <input class="textBox" type="text" v-model="intext" placeholder="想写些什么呢~">
 
         <!-- 提交按钮 -->
-        <img :src="btnImg"
-         @click="postText"
-          class="btnInput">
+        <img :src="btnImg" @click="postText" class="btnInput">
       </div>
     </div>
     <div class="box-right"></div>
@@ -53,22 +45,27 @@ export default {
     }
   },
   methods: {
-    postText(){
-      if(this.intext !== '') {
+    postText() {
+      if (this.intext !== '') {
         console.log(this.intext)
         this.talkList.push({
           'role': 'user', 'content': this.intext
         })
         this.awaiting = true
         const messages = encodeURIComponent(JSON.stringify(this.talkList));
-        axios.get(`API/copilot/?messages=${messages}`).then(res=>{
+        axios.get(`API/copilot/?messages=${messages}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            // 其他自定义请求头
+          }
+        }).then(res => {
           // console.log(res)
           // console.log(res.data.choices[0].message.content)
           this.talkList.push({
-          'role': 'assistant', 'content': res.data.choices[0].message.content
-        })
+            'role': 'assistant', 'content': res.data.choices[0].message.content
+          })
           this.awaiting = false
-        }).catch(error=>{
+        }).catch(error => {
           console.log(error)
         })
         this.intext = ''
@@ -172,6 +169,7 @@ body {
   background-color: white;
   margin: 20px;
 }
+
 .divLine2 {
   width: 90%;
   height: 2px;
@@ -183,12 +181,14 @@ body {
   margin: 20px;
   font-size: 15px;
 }
+
 .box-mid {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
 }
+
 .mesBox {
   width: 95%;
   height: 85%;
@@ -202,27 +202,33 @@ body {
   border: rgba(255, 255, 255, 0.8) dashed 2px;
   overflow: auto;
 }
+
 .mesBox::-webkit-scrollbar {
   display: none;
 }
-.talka, .talku {
+
+.talka,
+.talku {
   width: 90%;
-  height:auto;
+  height: auto;
   border-radius: 10px;
   margin: 10px;
   padding-left: 15px;
   padding-right: 15px;
   padding: 10px;
 }
+
 .talka {
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
   border-bottom: white solid 2px;
 }
+
 .talku {
   background-color: rgba(255, 255, 255, 0.6);
   border-bottom: black solid 2px;
 }
+
 .inputBox {
   width: 100%;
   display: flex;
@@ -230,6 +236,7 @@ body {
   align-items: center;
   align-self: flex-end;
 }
+
 .textBox {
   width: 85%;
   height: 30px;
@@ -244,13 +251,15 @@ body {
   padding-right: 15px;
   font-size: 15px;
 }
+
 .textBox::placeholder {
   color: rgba(250, 116, 138, 0.795);
   font-weight: 600;
 }
+
 .btnInput {
-  width:30px;
-  height:30px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background-color: white;
   margin: 15px;
@@ -258,9 +267,11 @@ body {
   padding: 2px;
   transition: background-color 0.5s;
 }
+
 .btnInput:hover {
   background-color: rgba(255, 255, 255, 0.5);
 }
+
 .btnInput:active {
   background-color: rgba(255, 255, 255);
 }
