@@ -24,12 +24,23 @@
         <img :src="btnImg" @click="postText" class="btnInput">
       </div>
     </div>
-    <div class="box-right"></div>
+    <div class="box-right">
+      <div class="bookTitle">- 记事 -</div>
+      <div class="board">
+        <tc></tc>
+        <tc></tc>
+        <tc></tc>
+        <tc></tc>
+        <tc></tc>
+      </div>
+      <button @click="leaveWord" class="btnMes">+</button>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import tc from '@/components/textCard.vue'
 export default {
   data() {
     return {
@@ -53,12 +64,7 @@ export default {
         })
         this.awaiting = true
         const messages = encodeURIComponent(JSON.stringify(this.talkList));
-        axios.get(`API/copilot/?messages=${messages}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            // 其他自定义请求头
-          }
-        }).then(res => {
+        axios.get(`API/copilot/?messages=${messages}`).then(res => {
           // console.log(res)
           // console.log(res.data.choices[0].message.content)
           this.talkList.push({
@@ -89,11 +95,28 @@ export default {
       let month = time.getMonth() + 1; // 月份是从 0 开始计数的，所以需要加 1
       let day = time.getDate();
       this.ctime = year + "年" + month + "月" + day + "日"
-    }
+    },
+    leaveWord() {
+      const postData = {
+        title: '留言标题',
+        content: '留言内容',
+        name: '留言人名字'
+      }
+      axios.post('http://127.0.0.1:8000/api/lw', postData)
+      .then(()=>{
+        console.log("留言成功！")
+      })
+      .catch(()=>{
+        console.log("好像没成555~")
+      })
+    },
   },
   created() {
     this.setTime1()
   },
+  components: {
+    tc
+  }
 }
 </script>
 
@@ -274,5 +297,52 @@ body {
 
 .btnInput:active {
   background-color: rgba(255, 255, 255);
+}
+
+.board {
+  position: absolute;
+  width: 100%;
+  height: 93%;
+  /* border: #ff0303 solid 1px; */
+  /* background-color: aqua; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+}
+.board::-webkit-scrollbar {
+  display: none;
+}
+
+.btnMes {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  border: none;
+  font-size: 24px;
+  font-weight: 500;
+  border-radius: 50%;
+  background-color: white;
+  margin: 15px;
+  margin-left: 15px;
+  padding: 2px;
+  transition: background-color 0.5s;
+}
+
+.btnMes:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.btnMes:active {
+  background-color: rgba(255, 255, 255);
+}
+.bookTitle {
+  margin: 10px;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
