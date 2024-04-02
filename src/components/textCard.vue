@@ -1,17 +1,37 @@
 <template>
     <div class='textCard'>
         <div class="titleCard">
-            今日日记
+            {{ title }}
         </div>
         <div class="mesCard">
-            我今天打了一天的游戏，现在超开心的！
+            {{ mes }}
         </div>
-        <div class="timeCard">- 2024-4-1 -</div>
+        <div class="timeCard">- {{ date }} -</div>
     </div>
 </template>
 
 <script>
-export default {}
+export default {
+    data() {
+        return {
+
+        }
+    },
+    props: {
+        title: {
+            type: String,
+            required: true
+        },
+        mes: {
+            type: String,
+            required: true
+        },
+        date: {
+            type: String,
+            required: true
+        }
+    }
+}
 </script>
 <style scoped>
 .textCard {
