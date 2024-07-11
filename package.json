@@ -8,7 +8,12 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "3d-force-graph": "^1.73.3",
     "core-js": "^3.8.3",
+    "neo4j-driver": "^4.2.2",
+    "three": "^0.166.1",
+    "three-forcegraph": "^1.41.14",
+    "three-render-objects": "1.29",
     "vue": "^3.2.13"
   },
   "devDependencies": {
