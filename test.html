@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+    <title>Neovis.js Simple Example</title>
+    <style type="text/css">
+        html, body {
+            font: 16pt arial;
+        }
+
+        #viz {
+            width: 900px;
+            height: 700px;
+            border: 1px solid lightgray;
+            font: 22pt arial;
+        }
+    </style>
+</head>
+<body onload="draw()">
+<div id="viz"></div>
+</body>
+<script src="node_modules/neovis.js/dist/neovis.js"></script>
+<script type="text/javascript">
+
+    let neoViz;
+
+    function draw() {
+        const config = {
+            containerId: "viz",
+            neo4j: {
+                serverUrl: "bolt://localhost:7687",
+                serverUser: "neo4j",
+                serverPassword: "174235",
+            },
+			initialCypher: "MATCH (n)-[r]->(m) RETURN n, m"
+        };
+
+        neoViz = new NeoVis.default(config);
+        neoViz.render();
+    }
+</script>
+</html>
