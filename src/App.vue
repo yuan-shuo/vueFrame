@@ -1,3 +1,13 @@
+<!-- 
+from Yuan:
+npm need:
+
+!!!IMPORTANT!!!
+npm install three@">=0.118 <1" three-forcegraph@1 three-render-objects@"^1.29"
+!!!IMPORTANT!!!
+
+npm install neo4j-driver 3d-force-graph
+-->
 <template>
   <div ref="graph" id="graph"></div>
 </template>
@@ -11,6 +21,7 @@ export default {
       myGraph: null,
       graphData: null,
       db:{
+      // 改写为数据库对应信息!
         uri : 'bolt://localhost:7687',
         user : 'neo4j',
         password : '174235'
